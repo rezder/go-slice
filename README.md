@@ -1,0 +1,2 @@
+# go-slice
+slice utilities.
