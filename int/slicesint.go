@@ -57,3 +57,32 @@ func Remove(list []int, out int) (res []int) {
 	}
 	return res
 }
+
+//AddSorted add a element to a sorted list keeping the sort
+//dec true if decending sort
+func AddSorted(list []int, in int, dec bool) []int {
+	if len(list) == 0 {
+		list = append(list, in)
+	} else {
+		index := len(list)
+		if dec {
+			for i, v := range list {
+				if in >= v {
+					index = i
+					break
+				}
+			}
+		} else {
+			for i, v := range list {
+				if in <= v {
+					index = i
+					break
+				}
+			}
+		}
+		list = append(list, 0)
+		copy(list[index+1:], list[index:])
+		list[index] = in
+	}
+	return list
+}
