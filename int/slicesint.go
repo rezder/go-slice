@@ -49,13 +49,18 @@ func WithOut(list []int, out []int) (res []int) {
 	return res
 }
 func Remove(list []int, out int) (res []int) {
-	res = make([]int, 0, len(list))
+	res = make([]int, 0, cap(list))
 	for _, v := range list {
 		if out != v {
 			res = append(res, v)
 		}
 	}
 	return res
+}
+func RemoveV(list []int, out int) (updList []int, upd bool) {
+	n := len(list)
+	updList = Remove(list, out)
+	return updList, n != len(updList)
 }
 
 //AddSorted add a element to a sorted list keeping the sort
