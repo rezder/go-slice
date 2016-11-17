@@ -1,4 +1,8 @@
-package slices
+package slicesint
+
+import (
+	"sort"
+)
 
 func Contain(list []int, value int) (con bool) {
 	for _, v := range list {
@@ -90,4 +94,35 @@ func AddSorted(list []int, in int, dec bool) []int {
 		list[index] = in
 	}
 	return list
+}
+
+//Slice a wrapper for sort that rembers the indices
+type Slice struct {
+	sort.Interface
+	ixs []int
+	//TODO Maybe move to genral package
+}
+
+func (s Slice) Swap(i, j int) {
+	s.Interface.Swap(i, j)
+	s.ixs[i], s.ixs[j] = s.ixs[j], s.ixs[i]
+}
+
+func NewSlice(list sort.Interface) *Slice {
+	s := &Slice{Interface: list, ixs: make([]int, list.Len())}
+	for i := range s.ixs {
+		s.ixs[i] = i
+	}
+	return s
+}
+
+func NewIntSlice(list []int) *Slice {
+	return NewSlice(sort.IntSlice(list))
+}
+
+//SortWithIx sorts the list and return the indices.
+func SortWithIx(list []int) (ixs []int) {
+	s := NewIntSlice(list)
+	sort.Sort(s)
+	return s.ixs
 }
